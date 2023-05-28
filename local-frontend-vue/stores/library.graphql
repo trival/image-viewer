@@ -1,0 +1,38 @@
+fragment LibraryData on Library {
+	id
+	name
+	rootPath
+	ignorePaths
+}
+
+query GetLibraries {
+	getLibraries {
+		...LibraryData
+	}
+}
+
+mutation CreateLibrary($name: String!, $rootPath: String!) {
+	createLibrary(name: $name, rootPath: $rootPath) {
+		...LibraryData
+	}
+}
+
+mutation UpdateLibrary(
+	$id: String!
+	$name: String
+	$rootPath: String
+	$ignorePaths: [String!]
+) {
+	updateLibrary(
+		id: $id
+		name: $name
+		rootPath: $rootPath
+		ignorePaths: $ignorePaths
+	) {
+		...LibraryData
+	}
+}
+
+mutation DeleteLibrary($id: String!) {
+	deleteLibrary(id: $id)
+}

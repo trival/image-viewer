@@ -12,6 +12,7 @@ import {
 	Scripts,
 	Title,
 } from "solid-start"
+import { AppStoreProvider } from "./components/AppContext"
 
 export default function Root() {
 	return (
@@ -28,10 +29,11 @@ export default function Root() {
 			<Body>
 				<Suspense>
 					<ErrorBoundary>
-						<header>Root header</header>
-						<Routes>
-							<FileRoutes />
-						</Routes>
+						<AppStoreProvider>
+							<Routes>
+								<FileRoutes />
+							</Routes>
+						</AppStoreProvider>
 					</ErrorBoundary>
 				</Suspense>
 				<Scripts />

@@ -48,7 +48,7 @@ export async function writeConfigFile(
 	fileName: string,
 	content: string,
 ): Promise<void> {
-	let backupFileName = "_" + fileName
+	const backupFileName = "_" + fileName
 	const backupFile = path.resolve(
 		pathStr,
 		viewerConfigDirectoryName,

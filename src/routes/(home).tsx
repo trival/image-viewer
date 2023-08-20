@@ -6,7 +6,7 @@ export default function Home() {
 		trpcClient.hello.query(payload),
 	)
 	return (
-		<main class="">
+		<main class="p-5">
 			<Show when={!fufu.loading} fallback={<p>...loading</p>}>
 				hello: {fufu()!.greeting}
 			</Show>

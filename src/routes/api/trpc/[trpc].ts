@@ -1,6 +1,6 @@
 import { type APIEvent } from "solid-start/api"
 import { fetchRequestHandler } from "@trpc/server/adapters/fetch"
-import { trpcRouter } from "~/backend/trpc"
+import { trpcRouter } from "~/backend/appContext"
 
 const handler = (event: APIEvent) =>
 	fetchRequestHandler({

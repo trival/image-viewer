@@ -15,12 +15,12 @@ export type Result<R, E> = Error<E> | Success<R>
 export function error<E>(error: E): Error<E> {
 	return { error }
 }
-export function success<R>(success: R): Success<R> {
+export function ok<R>(success: R): Success<R> {
 	return { success }
 }
 export function isError<R, E>(result: Result<R, E>): result is Error<E> {
 	return "error" in result
 }
-export function isSuccess<R, E>(result: Result<R, E>): result is Success<R> {
+export function isOk<R, E>(result: Result<R, E>): result is Success<R> {
 	return "success" in result
 }

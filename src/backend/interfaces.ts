@@ -4,7 +4,6 @@ export interface Library {
 	name: string
 	rootPath: string
 	ignorePaths: string[]
-	tags: Tag[]
 }
 
 export interface Media {
@@ -39,32 +38,8 @@ export enum TagError {
 	TagNotFound = "TagNotFound",
 }
 
-export interface LibraryService {
-	// Library basics
-	getLibraries(): Promise<Library[]>
-	openLibrary(
-		rootPath: string,
-	): Promise<Result<Library, LibraryError.LibraryNotFound>>
-	createLibrary(
-		rootPath: string,
-		name: string,
-	): Promise<Result<Library, LibraryError.LibraryAlreadyExists>>
-	updateLibrary(
-		rootPath: string,
-		name: Maybe<string>,
-		ignorePaths: Maybe<string[]>,
-	): Promise<Result<Library, LibraryError.LibraryNotFound>>
-
-	getMedia(
-		libPath: string,
-	): Promise<Result<Media[], LibraryError.LibraryNotFound>>
-	reloadMedia(
-		libPath: string,
-		subPath: Maybe<string>,
-	): Promise<Result<Media[], LibraryError.LibraryNotFound>>
-}
-
 export interface TagService {
+	getTags(libPath: string): Promise<Result<Tag[], LibraryError.LibraryNotFound>>
 	createTag(
 		libPath: string,
 		name: string,

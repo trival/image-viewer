@@ -2,7 +2,6 @@
 import "./globals.css"
 import { Suspense } from "solid-js"
 import {
-	A,
 	Body,
 	ErrorBoundary,
 	FileRoutes,

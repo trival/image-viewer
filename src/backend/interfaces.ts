@@ -1,4 +1,4 @@
-import { Maybe, Result } from "@/libs/types"
+import { Maybe, Result } from "~/libs/types"
 
 export interface Library {
 	name: string

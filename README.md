@@ -10,8 +10,6 @@ and edit your libraries remotely from mobile devices.
 
 ### MVP (local library viewing)
 
-- use json files as config persistence
-
 ### Remote Library viewing
 
 - implement a remote server that allows to register local libraries for viewing

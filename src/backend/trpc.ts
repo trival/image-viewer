@@ -1,9 +1,21 @@
+import { z } from "zod"
 import { initTRPC } from "@trpc/server"
-// Avoid exporting the entire t-object
-// since it's not very descriptive.
-// For instance, the use of a t variable
-// is common in i18n libraries.
-const t = initTRPC.create()
-// Base router and procedure helpers
-export const router = t.router
-export const procedure = t.procedure
+
+const { router, procedure } = initTRPC.create()
+
+export const trpcRouter = router({
+	hello: procedure
+		.input(
+			z.object({
+				text: z.string(),
+			}),
+		)
+		.query((opts) => {
+			return {
+				greeting: `hello ${opts.input.text}`,
+			}
+		}),
+})
+
+// export type definition of API
+export type TrpcAppRouter = typeof trpcRouter

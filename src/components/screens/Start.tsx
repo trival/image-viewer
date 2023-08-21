@@ -1,7 +1,8 @@
 import { Icon } from "solid-heroicons"
 import { chevronRight } from "solid-heroicons/outline"
-import { For, createSignal } from "solid-js"
+import { For, Show, createSignal } from "solid-js"
 import { Library } from "~/backend/interfaces"
+import CreateLibraryForm from "../fragments/CreateLibraryForm"
 
 interface Props {
 	libraries: Library[]
@@ -56,81 +57,19 @@ export default function StartScreen(props: Props) {
 							<span aria-hidden="true"> &rarr;</span>
 						</button>
 
-						<div class="relative z-10">
-							<div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
+						<Show when={open()}>
+							<div class="relative z-10">
+								<div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
 
-							<div class="fixed inset-0 z-10 overflow-y-auto">
-								<div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
-									<div class="relative transform overflow-hidden rounded-lg bg-white px-4 pt-5 pb-4 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-sm sm:p-6">
-										<div>
-											<h3 class="text-lg text-center font-medium leading-6 text-gray-900">
-												Create a photo library
-											</h3>
-											<div class="mt-4">
-												<form
-												// :initial-values="{ name: '', rootPath: '' }"
-												// :validation-schema="formSchema"
-												// @submit="onFormSubmit"
-												>
-													<div>
-														<label
-															for="name"
-															class="block text-sm font-medium text-gray-700"
-														>
-															Name
-														</label>
-														<div class="mt-1">
-															<Field
-																id="name"
-																name="name"
-																autocomplete="name"
-																required
-																class="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
-															/>
-														</div>
-														<ErrorMessage
-															class="mt-2 text-sm text-red-600"
-															name="name"
-														/>
-													</div>
-
-													<div class="mt-6">
-														<label
-															for="rootPath"
-															class="block text-sm font-medium text-gray-700"
-														>
-															Root path
-														</label>
-														<div class="mt-1">
-															<Field
-																id="rootPath"
-																name="rootPath"
-																autocomplete="root path"
-																required
-																class="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
-															/>
-														</div>
-														<ErrorMessage
-															class="mt-2 text-sm text-red-600"
-															name="rootPath"
-														/>
-													</div>
-
-													<div class="mt-12 mb-2">
-														<button
-															type="submit"
-															class="flex w-full justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-														>
-															Create
-														</button>
-													</div>
-												</form>
-											</div>
+								<div class="fixed inset-0 z-10 overflow-y-auto">
+									<div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+										<div class="relative transform overflow-hidden rounded-lg bg-white px-4 pt-5 pb-4 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-sm sm:p-6">
+											<CreateLibraryForm onCreate={props.onCreate} />
 										</div>
 									</div>
 								</div>
 							</div>
-						</div>
+						</Show>
 					</div>
 				</div>
 			</div>

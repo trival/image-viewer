@@ -6,16 +6,27 @@ import {
 } from "solid-js"
 import { createStore } from "solid-js/store"
 import { Library } from "~/backend/interfaces"
+import { trpcClient } from "~/libs/trpc-client"
+import { isOk } from "~/libs/types"
 
 export interface State {
 	currentLibrary: Library | null
 	libraries: Library[]
 }
+
+interface CreateLibraryInput {
+	rootPath: string
+	name: string
+}
 export interface Actions {
-	loadLibraries: () => void
-	selectLibrary: (rootPath: string) => void
-	createLibrary: (input: { rootPath: string; name: string }) => void
-	updateLibrary: (input: { name?: string; ignorePaths?: string[] }) => void
+	loadLibraries: () => Promise<void>
+	openLibrary: (rootPath: string) => void
+	closeLibrary: () => void
+	createLibrary: (input: CreateLibraryInput) => Promise<void>
+	updateLibrary: (input: {
+		name?: string
+		ignorePaths?: string[]
+	}) => Promise<void>
 }
 
 export type AppStore = [State, Actions]
@@ -28,13 +39,37 @@ export function AppStoreProvider(props: ParentProps) {
 		libraries: [],
 	})
 
+	async function loadLibraries() {
+		const libs = await trpcClient.getLibraries.query()
+		setState("libraries", libs)
+	}
+
+	function openLibrary(rootPath: string) {
+		const lib = state.libraries.find((l) => l.rootPath === rootPath)
+		if (lib) {
+			setState("currentLibrary", lib)
+		}
+	}
+
+	function closeLibrary() {
+		setState("currentLibrary", null)
+	}
+
+	async function createLibrary(input: CreateLibraryInput) {
+		const libResult = await trpcClient.createLibrary.mutate(input)
+		if (isOk(libResult)) {
+			await loadLibraries()
+		}
+	}
+
 	const store: AppStore = [
 		state,
 		{
-			loadLibraries: () => {},
-			selectLibrary: (rootPath) => {},
-			createLibrary: (input) => {},
-			updateLibrary: (input) => {},
+			loadLibraries,
+			openLibrary,
+			closeLibrary,
+			createLibrary,
+			updateLibrary: async (input) => {},
 		},
 	]
 

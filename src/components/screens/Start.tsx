@@ -1,8 +1,9 @@
 import { Icon } from "solid-heroicons"
-import { chevronRight } from "solid-heroicons/outline"
-import { For, Show, createSignal } from "solid-js"
+import { chevronRight, xMark } from "solid-heroicons/outline"
+import { For, createSignal } from "solid-js"
 import { Library } from "~/backend/interfaces"
 import CreateLibraryForm from "../fragments/CreateLibraryForm"
+import Dialog from "../fragments/Dialog"
 
 interface Props {
 	libraries: Library[]
@@ -11,7 +12,8 @@ interface Props {
 }
 
 export default function StartScreen(props: Props) {
-	const [open, setOpen] = createSignal(false)
+	const [openDialog, setOpenDialog] = createSignal(false)
+	const closeDialog = () => setOpenDialog(false)
 	return (
 		<div class="sm:flex items-center justify-center h-screen">
 			<div class="overflow-hidden bg-white shadow sm:rounded-lg w-full h-full sm:w-96 sm:h-auto">
@@ -50,26 +52,31 @@ export default function StartScreen(props: Props) {
 					</ul>
 					<div class="mt-6 flex">
 						<button
-							onClick={() => setOpen(true)}
+							onClick={() => setOpenDialog(true)}
 							class="text-sm font-medium text-indigo-600 hover:text-indigo-500"
 						>
 							Or add a new library
 							<span aria-hidden="true"> &rarr;</span>
 						</button>
 
-						<Show when={open()}>
-							<div class="relative z-10">
-								<div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
-
-								<div class="fixed inset-0 z-10 overflow-y-auto">
-									<div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
-										<div class="relative transform overflow-hidden rounded-lg bg-white px-4 pt-5 pb-4 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-sm sm:p-6">
-											<CreateLibraryForm onCreate={props.onCreate} />
-										</div>
-									</div>
-								</div>
-							</div>
-						</Show>
+						<Dialog
+							open={openDialog()}
+							onClose={closeDialog}
+							class="relative transform overflow-hidden rounded-lg bg-white px-4 pt-5 pb-4 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-sm sm:p-6"
+						>
+							<button
+								onClick={closeDialog}
+								class="w-8 h-8 absolute top-0 right-0"
+							>
+								<Icon path={xMark} />
+							</button>
+							<CreateLibraryForm
+								onCreate={(input) => {
+									props.onCreate(input)
+									closeDialog()
+								}}
+							/>
+						</Dialog>
 					</div>
 				</div>
 			</div>

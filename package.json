@@ -10,6 +10,7 @@
     "types": "tsc --noEmit"
   },
   "dependencies": {
+    "@motionone/solid": "^10.16.2",
     "@solidjs/meta": "^0.28.5",
     "@solidjs/router": "^0.8.2",
     "@trpc/client": "^10.28.0",

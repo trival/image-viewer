@@ -1,11 +1,5 @@
 import { Library } from "../interfaces"
-import {
-	createHomeConfig,
-	readJsonConfigFile,
-	readJsonHomeConfigFile,
-	writeJsonConfigFile,
-	writeJsonHomeConfigFile,
-} from "./utils"
+import { PersistenceUtils } from "./utils"
 
 export interface LibraryStorage {
 	readLibraryPaths(): Promise<string[]>
@@ -17,16 +11,19 @@ export interface LibraryStorage {
 export const libPathsFileName = "libraries.json"
 export const libMetaFileName = "library.json"
 
-export function createLibraryStorage(): LibraryStorage {
+export function createLibraryStorage(utils: PersistenceUtils): LibraryStorage {
 	async function readLibraryPaths() {
-		await createHomeConfig()
-		const paths = await readJsonHomeConfigFile<string[]>(libPathsFileName)
+		await utils.createHomeConfig()
+		const paths = await utils.readJsonHomeConfigFile<string[]>(libPathsFileName)
 
 		return paths || []
 	}
 
 	async function readLibraryData(rootPath: string) {
-		const lib = await readJsonConfigFile<Library>(rootPath, libMetaFileName)
+		const lib = await utils.readJsonConfigFile<Library>(
+			rootPath,
+			libMetaFileName,
+		)
 		if (!lib) {
 			throw new Error("Library not found")
 		}
@@ -37,11 +34,11 @@ export function createLibraryStorage(): LibraryStorage {
 		const paths = await readLibraryPaths()
 		const set = new Set(paths)
 		set.add(rootPath)
-		await writeJsonHomeConfigFile(libPathsFileName, Array.from(set))
+		await utils.writeJsonHomeConfigFile(libPathsFileName, Array.from(set))
 	}
 
 	async function writeLibraryData(lib: Library) {
-		await writeJsonConfigFile(lib.rootPath, libMetaFileName, {
+		await utils.writeJsonConfigFile(lib.rootPath, libMetaFileName, {
 			...lib,
 			rootPath: undefined,
 		})

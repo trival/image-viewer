@@ -1,5 +1,3 @@
-import { Maybe, Result } from "~/libs/types"
-
 export interface Library {
 	name: string
 	rootPath: string
